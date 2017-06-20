@@ -1,8 +1,3 @@
-var $s=$("street").val();
-console.log($s);
-var $c=$("city").val();
-console.log($c);
-
 function loadData() {
 
     var $body = $('body');
@@ -20,10 +15,12 @@ function loadData() {
     var address = streetStr + ", " + cityStr;
 
     $greeting.text('So you wanto to live at '+ address + "?");
-
-    streetViewURL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" + address + '';
-    $body.append('<p>streetViewURL</p>')
-    $body.append('<img class="bgimg" src="streetViewURL">')
+                      //Deberia funcionar:
+                      //https://maps.googleapis.com/maps/api/streetview?size=600x300&location=24 willie mays plaza, san francisco, ca&key=AIzaSyDpNKawxZsx5OBc_vGKjMA4Ny3FlBZomQM
+                      //https://maps.googleapis.com/maps/api/streetview?size=600x300&location=24%20willie%20mays%20plaza,%20san%20francisco,%20ca&key=AIzaSyDpNKawxZsx5OBc_vGKjMA4Ny3FlBZomQM
+    streetViewURL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" + address + '&key=AIzaSyDpNKawxZsx5OBc_vGKjMA4Ny3FlBZomQM';
+    $body.append("<p>"+streetViewURL+"</p>");
+    $body.append('<img class="bgimg" src="'+streetViewURL+'">')
 
       // YOUR CODE GOES HERE!
     return false;
