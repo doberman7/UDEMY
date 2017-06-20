@@ -21,8 +21,7 @@ function loadData() {
     streetViewURL = "https://maps.googleapis.com/maps/api/streetview?size=600x300&location=" + address + '&key=AIzaSyDpNKawxZsx5OBc_vGKjMA4Ny3FlBZomQM';
     $body.append("<p>"+streetViewURL+"</p>");
     $body.append('<img class="bgimg" src="'+streetViewURL+'">')
-
-      // YOUR CODE GOES HERE!
+    console.log(streetViewURL);          
     return false;
 };
 //apuntar formulario
