@@ -24,7 +24,7 @@ function loadData() {
 
 
     // load nytimes
-    
+
     // YOUR CODE GOES HERE!
 
     return false;
