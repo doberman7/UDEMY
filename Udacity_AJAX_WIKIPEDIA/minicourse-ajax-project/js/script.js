@@ -57,20 +57,26 @@ function loadData() {
       /*IMPORTANTE: necesario es action=opensearch, protocolo de busqueda abierta, fuente: https://en.wikipedia.org/w/api.php?action=help&modules=opensearch*/
       url: 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + streetStr + '&format=json&callback=wikiCallback',
       dataType: 'jsonp',
-      //origin: "https://en.wikipedia.org",
+      
       success: function(data) {
 
       $("#wikipedia-links").text('Wiki article about '+address);
-      var articles = data[1];
-      console.log(articles);
 
-      for (var i = 0; i < articles.length; i++) {
-          var article = articles[i];
-          var url = 'http://en.wikipedia.org/wiki/' + address;
-          //console.log(url);
-          $wikiElem.append('<li><a href="'+url+'">'+
-              article+ '</a></li>');
-          };
+      var urls = data[3];//array with Url froms the response
+      var articles = data[1];//array with Articles titles froms the response
+
+      $.each(articles,function(index, article){
+        //On the wikiElem append the a link the corresponding URL, only the article title is shown in the text
+        $wikiElem.append('<li><a href="'+urls[index]+'">'+article+ '</a></li>');
+      });
+      //Solucion del ejercicio
+      // for (var i = 0; i < articles.length; i++) {
+      //     var article = articles[i];
+      //     var url = 'http://en.wikipedia.org/wiki/' + address;
+      //     //console.log(url);
+      //     $wikiElem.append('<li><a href="'+url+'">'+
+      //         article+ '</a></li>');
+      //     };
       },
       error: function (e) {
         $wikiHeaderElem.text('Cannot get article');
