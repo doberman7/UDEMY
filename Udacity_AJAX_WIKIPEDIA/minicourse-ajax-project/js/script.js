@@ -1,5 +1,7 @@
+//https://mega.nz/register#!ZM1RAaqT!BSzzHj5D-EWUsvZkMTeb4zurUGORVfNzOLXqFpcpmH4
 
 function loadData() {
+
 
     /*
     The $ that shows up in variable names, like $body for example, is just a character like any other. In this case, it refers to the fact that the variable referenced by $body is a jQuery collection, not a DOM node.
@@ -46,15 +48,33 @@ function loadData() {
         $nytHeaderElem.text('New York Times Articles Could Not Be Loaded');
     });
 
-    $wgCrossSiteAJAXdomains = array( '*' );    
+
     // load wikipedia data
+    //Fuente1: https://discussions.udacity.com/t/cannot-load-wikipedia-api/18995
+    //Fuente2: https://discussions.udacity.com/t/wikipedia-api-search-link/215830/5
+    //Funete3: https://en.wikipedia.org/w/api.php
     $.ajax({
-      url : "https://en.wikipedia.org/w/api.php?action=query&titles=Main%20Page&prop=revisions&rvprop=content&format=json",
-      //dataType (default: Intelligent Guess (xml, json, script, or html))
-      dataType: 'text',
-      //Type: Function( Anything data, String textStatus, jqXHR jqXHR )
-      //A function to be called if the request succeeds. The function gets passed three arguments: The data returned from the server, formatted according to the dataType parameter or the dataFilter callback function, if specified; a string describing the status; and the jqXHR (in jQuery 1.4.x, XMLHttpRequest) object. As of jQuery 1.5, the success setting can accept an array of functions. Each function will be called in turn.
-      success:"Exito",
+      /*IMPORTANTE: necesario es action=opensearch, protocolo de busqueda abierta, fuente: https://en.wikipedia.org/w/api.php?action=help&modules=opensearch*/
+      url: 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + streetStr + '&format=json&callback=wikiCallback',
+      dataType: 'jsonp',
+      //origin: "https://en.wikipedia.org",
+      success: function(data) {
+
+      $("#wikipedia-links").text('Wiki article about '+address);
+      var articles = data[1];
+      console.log(articles);
+
+      for (var i = 0; i < articles.length; i++) {
+          var article = articles[i];
+          var url = 'http://en.wikipedia.org/wiki/' + address;
+          //console.log(url);
+          $wikiElem.append('<li><a href="'+url+'">'+
+              article+ '</a></li>');
+          };
+      },
+      error: function (e) {
+        $wikiHeaderElem.text('Cannot get article');
+      }
     });
     // YOUR CODE GOES HERE!
 
