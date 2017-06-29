@@ -64,7 +64,7 @@ function loadData() {
     //Funete3: https://en.wikipedia.org/w/api.php
     $.ajax({
       /*IMPORTANTE: necesario es action=opensearch, protocolo de busqueda abierta, fuente: https://en.wikipedia.org/w/api.php?action=help&modules=opensearch*/
-      url: 'http://en.wikipediAasdvsdvda.org/w/api.php?action=opensearch&search=' + streetStr + '&format=json&callback=wikiCallback',
+      url: 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + streetStr + '&format=json&callback=wikiCallback',
       dataType: 'jsonp',
 
       success: function(data) {
@@ -81,8 +81,11 @@ function loadData() {
         //Prevent the function set with the setTimeout() to execute:
         clearTimeout(wikiTimeout);
       }
-      /* A function to be called if the request fails,
-        Not working in case of net::ERR_NAME_NOT_RESOLVED*/
+      /*
+        A function to be called if the request fails,
+        Not working in case of net::ERR_NAME_NOT_RESOLVED
+        Onlyworking with a ligth fucki of with tje url
+      */
     }).error(function(){
         $("#wikipedia-header").text('Cannot get article from wikipedia');
     });
