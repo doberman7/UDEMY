@@ -43,12 +43,16 @@ function loadData() {
                 '<p>' + article.snippet + '</p>'+
             '</li>');
         };
-
+      //conclicion getJSON se encadene el error
     }).error(function(e){
         $nytHeaderElem.text('New York Times Articles Could Not Be Loaded');
     });
 
 
+    // Delay  a message to append after a 4000 milisecs.
+    var wikiTimeout = setTimeout(function(){
+      $("#wikipedia-links").append("<p>4000 milisecs is Too much time wasted for a response</p>");
+    },4000);
     // load wikipedia data
     //Fuente1: https://discussions.udacity.com/t/cannot-load-wikipedia-api/18995
     //Fuente2: https://discussions.udacity.com/t/wikipedia-api-search-link/215830/5
@@ -57,32 +61,25 @@ function loadData() {
       /*IMPORTANTE: necesario es action=opensearch, protocolo de busqueda abierta, fuente: https://en.wikipedia.org/w/api.php?action=help&modules=opensearch*/
       url: 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + streetStr + '&format=json&callback=wikiCallback',
       dataType: 'jsonp',
-      
+
       success: function(data) {
+        $("#wikipedia-links").text('Wiki article about '+address);
 
-      $("#wikipedia-links").text('Wiki article about '+address);
+        var urls = data[3];//array with Url froms the response
+        var articles = data[1];//array with Articles titles froms the response
 
-      var urls = data[3];//array with Url froms the response
-      var articles = data[1];//array with Articles titles froms the response
-
-      $.each(articles,function(index, article){
         //On the wikiElem append the a link the corresponding URL, only the article title is shown in the text
-        $wikiElem.append('<li><a href="'+urls[index]+'">'+article+ '</a></li>');
-      });
-      //Solucion del ejercicio
-      // for (var i = 0; i < articles.length; i++) {
-      //     var article = articles[i];
-      //     var url = 'http://en.wikipedia.org/wiki/' + address;
-      //     //console.log(url);
-      //     $wikiElem.append('<li><a href="'+url+'">'+
-      //         article+ '</a></li>');
-      //     };
-      },
-      error: function (e) {
-        $wikiHeaderElem.text('Cannot get article');
+        $.each(articles,function(index, article){
+          $wikiElem.append('<li><a href="'+urls[index]+'">'+article+ '</a></li>');
+        });
+
+        //Prevent the function set with the setTimeout() to execute:
+        clearTimeout(wikiTimeout);
       }
+      //A function to be called if the request fails,
+    }).error(function(){
+        $("#wikipedia-header").text('Cannot get article from wikipedia');
     });
-    // YOUR CODE GOES HERE!
 
     return false;
 };
